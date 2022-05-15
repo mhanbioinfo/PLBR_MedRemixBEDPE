@@ -1,0 +1,102 @@
+## snakemake config file
+
+paths:
+  dependencies:
+    # ConsensusCruncher: 
+    # Clone https://github.com/pughlab/ConsensusCruncher and locate extract_barcodes.py
+    # within the code. Provide the absolute path to extract_barcodes.py below.
+    extract_barcodes_path: src/ConsensusCruncher/ConsensusCruncher/extract_barcodes.py
+
+pipeline_params:
+  # input filetype: .fastq.gz or .bam or .bedpe
+  input_ftype: fastq
+  #input_ftype: bam
+  #input_ftype: bedpe
+
+  # using bam or bedpe as input to MedRemix
+  # (mostly for sanity check that outputs are same whether MedRemix input is .bam or .bedpe.gz)
+  #bam_or_bedpe: bam
+  bam_or_bedpe: bedpe
+
+  # window size:
+  window_size: 300
+ 
+  # bam2bedpe #############################
+  ## type "slurm" or "local"
+  #slurm_local: slurm
+  slurm_local: local
+  
+  ## number of chunks to proces in parallel
+  chunks: 5
+
+  ## full path to bam2bedpe helper scripts
+  src_dir: /full/path/to/workflow/src/bam2bedpe_scripts/
+  
+  ## full path to directory with picard.jar
+  picard_dir: /full/path/to/picard/2.10.9
+
+  ## path to conda activate
+  conda_activate: /full/path/to/bin/miniconda3/bin/activate
+
+  ## conda env
+  conda_env: MedRemixBEDPE
+
+data:
+  # This is the directory which will contain all of the pipeline's output.
+  base_path: /full/path/to/base_path/
+  
+  # Defaults:
+  # These are default settings
+  # Alternative settings can be specified for specific cohort under: data > cohorts > [cohortname] > settings,
+  # that will override default settings. 
+  defaults:
+
+    # Genome: path to default genome .fa file.
+    genome: /full/path/to/reference/genomes/hg38_F19K16_F24B22/hg38_F19K16_F24B22.fa
+
+    # BWA Index: this is the prefix for BWA Index. By adding the file extensions,
+    # you can locate the files. For example,
+    # bwa_index: /path/to/bwa/index implies that the following files exist:
+    # /path/to/bwa/index.amb, /path/to/bwa/index.ann, /path/to/bwa/index.bwt, ...
+    bwa_index: /full/path/to/reference/genomes/hg38_F19K16_F24B22/BWA_index/hg38_F19K16_F24B22
+
+    # BSgenome: You may provide either package names or paths to BSgenome packages below.
+    # If your data contains a mix of different organisms (e.g. arabidopsis), then you may
+    # provide a different BSgenome for each organism.
+    bsgenome:
+      human: '/full/path/to/reference/genomes/bsgenome/BSgenome.Hsapiens.UCSC.hg38'
+      arabidopsis: '/full/path/to/reference/genomes/bsgenome/BSgenome.F19K16.F24B22'
+
+    # Chromosomes: List the chromosomes below for each organism used.
+    chromosomes:
+      human: 'chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22'
+      arabidopsis: 'F19K16,F24B22'
+
+    # ConsensusCruncher barcode setting: Use either
+    # --blist BARCODELIST or --bpattern PATTERN below.
+    barcodes: '--blist /full/path/to/reference/barcodes/barcode_idt.txt'
+
+    # Trim Galore! settings: You may modify the below settings as you
+    # like, which will be provided as parameters to Trim Galore!
+    trimgalore: '--clip_R1 10 --clip_R2 10'
+
+  # Cohorts:
+  # For each cohort, you can specify whether it is an active cohort.
+  # Only active cohorts are processed. Labelling a cohort inactive will
+  # cause it to be skipped by the Snakefile.
+
+  cohorts:
+    update_conda:
+      samplesheet: /cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/workflow/samplesheet_example.csv
+      active: True
+      settings:
+        chromosomes:
+          human: 'chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20,chr21,chr22,chrX,chrY'
+          arabidopsis: 'F19K16,F24B22'
+    test:
+      samplesheet: /absolute/path/to/samplesheet.csv 
+      active: False
+      settings:
+        chromosomes:
+          human: 'chr1,chr2,chr3'
+          arabidopsis: 'F19K16,F24B22'

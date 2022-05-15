@@ -1,0 +1,64 @@
+#import yaml
+import pandas as pd
+#import gzip
+#import statistics
+
+#configfile: "config.yml"
+
+path_to_data = config['data']['base_path']
+input_ftype = config['pipeline_params']['input_ftype']
+
+#######################
+## loading rule modules
+include: "rules/update_conda_env.smk"        ## instructions for installing dependencies to conda env
+include: "rules/common.smk"                  ## self-defined functions
+
+if input_ftype == "fastq":
+    include: "rules/process_fastq.smk"           ## consensusCruncher & trim-galore
+    include: "rules/bwa_align_sort_merge.smk"    ## bwa align, samtools sort, merge
+elif input_ftype == "bam":
+    include: "rules/process_bam.smk"             ## if input_ftype == bam, softlink bam to proper directory and index bam
+elif input_ftype == "bedpe":
+    include: "rules/process_bedpe.smk"           ## if input_ftype == bedpe, softlink bedpe to proper directory
+
+include: "rules/fastq_bam_qc.smk"            ## fastQC on fastq and bam
+include: "rules/bin_stat.smk"                ## tally methylation coverage per bin, bam or bedpe
+include: "rules/bam2bedpe4medremix.smk"      ## convert bam to bedpe and bedpe4medremix as input to MedRemixBEDPE
+include: "rules/cfmedip_nbglm.smk"           ## run MedRemixBEDPE nbglm methylation algorithm, bam or bedpe
+
+
+
+# ------------------------------ #
+#  rule all (i.e. outputs)       #
+# ------------------------------ #
+
+use_bam_or_bedpe = list()
+bam_or_bedpe = config['pipeline_params']['bam_or_bedpe']
+if bam_or_bedpe == 'bedpe':
+    use_bam_or_bedpe.append(
+        expand(
+            [path_to_data + '/{cohort}/results/bedpe_cfmedip_nbglm/bedpe_{sample}_fit_nbglm.tsv'.format(
+                cohort=v[0],
+                sample=v[1]) for v in get_all_samples_with_cohorts()])
+    )
+elif bam_or_bedpe == 'bam':
+    use_bam_or_bedpe.append(
+        expand(
+            [path_to_data + '/{cohort}/results/bam_cfmedip_nbglm/bam_{sample}_fit_nbglm.tsv'.format(
+                cohort=v[0],
+                sample=v[1]) for v in get_all_samples_with_cohorts()])
+    )
+
+rule all:
+    input:
+        ### bam fastqc, bam flagstat
+        #expand(
+        #    [path_to_data + '/{cohort}/results/qc/{sample}_qc_complete'.format(
+        #        cohort=v[0],
+        #        sample=v[1]) for v in get_all_samples_with_cohorts()]),
+        ## get MedRemix nbglm output whether by .bam or via .bedpe 
+        use_bam_or_bedpe = use_bam_or_bedpe
+
+
+
+## EOF

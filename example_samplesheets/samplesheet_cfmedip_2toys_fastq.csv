@@ -1,0 +1,5 @@
+sample_name,library_index,read_in_pair,path
+toy01,1,1,/cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/toy_files/toy01_lib1_R1.fastq.gz
+toy01,1,2,/cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/toy_files/toy01_lib1_R2.fastq.gz
+toy02,1,1,/cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/toy_files/toy02_lib1_R1.fastq.gz
+toy02,1,2,/cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/toy_files/toy02_lib1_R2.fastq.gz

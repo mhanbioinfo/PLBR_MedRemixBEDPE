@@ -1,0 +1,19 @@
+jobs: 300
+latency-wait: 180
+max-jobs-per-second: 1
+restart-times: 1
+rerun-incomplete: True
+keep-going: True
+cluster:
+    mkdir -p logs_slurm/{rule}/ &&
+    sbatch
+        -p himem
+        -t {resources.time_min}
+        --mem={resources.mem_mb}
+        -c {resources.cpus}
+        --job-name=smk-{rule}-{wildcards}
+        --output=logs_slurm/{rule}/{wildcards}_{jobid}_%j_{rule}.out
+        --error=logs_slurm/{rule}/{wildcards}_{jobid}_%j_{rule}.err
+use-conda: true
+default-resources: [cpus=1, mem_mb=2000, time_min=60]
+max-status-checks-per-second: 10

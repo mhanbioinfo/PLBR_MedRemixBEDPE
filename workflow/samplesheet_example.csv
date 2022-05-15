@@ -1,0 +1,5 @@
+sample_name,library_index,read_in_pair,path
+sample_001,1,1,/path/to/fastq/dir/Sample1_L001_R1_001.fastq.gz
+sample_001,1,2,/path/to/fastq/dir/Sample1_L001_R2_001.fastq.gz
+sample_002,1,1,/path/to/fastq/dir/Sample2_L001_R1_001.fastq.gz
+sample_002,1,2,/path/to/fastq/dir/Sample2_L001_R2_001.fastq.gz

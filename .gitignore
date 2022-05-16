@@ -2,3 +2,4 @@
 **/workflow/logs_slurm/
 **/workflow/slurm*
 **/workflow/test*
+**/example_samplesheets/test*

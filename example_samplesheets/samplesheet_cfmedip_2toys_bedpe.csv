@@ -1,3 +1,3 @@
 sample_name,bedpe_path
-toy01,$HOME/git/cfmedip_medremix_bedpe_git/toy_files/toy01.bedpe.gz
-toy02,$HOME/git/cfmedip_medremix_bedpe_git/toy_files/toy02.bedpe.gz
+toy01,/path/to/some/directory/PLBR_MedRemixBEDPE/toy_files/toy01.bedpe.gz
+toy02,/path/to/some/directory/PLBR_MedRemixBEDPE/toy_files/toy02.bedpe.gz

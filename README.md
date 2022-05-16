@@ -15,3 +15,5 @@
 ![MedRemixBEDPE](https://user-images.githubusercontent.com/98410560/168604501-ce838357-b058-4df8-b6f7-cd4c1293e22d.png)
 
 Please see [wiki](https://github.com/mhanbioinfo/PLBR_MedRemixBEDPE/wiki) for tutorial on settings up and running pipeline.
+
+Questions please contact ming.han@uhn.ca.

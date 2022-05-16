@@ -30,20 +30,21 @@ pipeline_params:
   chunks: 5
 
   ## full path to bam2bedpe helper scripts
-  src_dir: /cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/workflow/src/bam2bedpe_scripts/
+  src_dir: /full/path/to/PLBR_MedRemixBEDPE/workflow/src/bam2bedpe_scripts/
   
   ## full path to directory with picard.jar
-  picard_dir: /cluster/tools/software/picard/2.10.9
+  picard_dir: /full/path/to/picard/2.10.9
 
   ## path to conda activate
-  conda_activate: /cluster/home/t110409uhn/bin/miniconda3/bin/activate
+  conda_activate: /full/path/to/miniconda3/bin/activate
 
   ## conda env
   conda_env: MedRemixBEDPE
 
 data:
   # This is the directory which will contain all of the pipeline's output.
-  base_path: /cluster/projects/pughlab/projects/cfMeDIP_compare_pipelines/cfmedip_medremix_bedpe/analysis003_2toys_input_ftype
+  # !! do not type last backslash '/'
+  base_path: /full/path/to/base_path
   
   # Defaults:
   # These are default settings
@@ -51,21 +52,19 @@ data:
   # that will override default settings. 
   defaults:
 
-    # Genome: path to default genome .fa file.
-    #genome: /cluster/projects/pughlab/projects/ezhao/assets/reference/genomes/hg38_F19K16_F24B22/hg38_F19K16_F24B22.fa
-
     # BWA Index: this is the prefix for BWA Index. By adding the file extensions,
     # you can locate the files. For example,
     # bwa_index: /path/to/bwa/index implies that the following files exist:
     # /path/to/bwa/index.amb, /path/to/bwa/index.ann, /path/to/bwa/index.bwt, ...
-    bwa_index: /cluster/projects/pughlab/projects/cfMeDIP_compare_pipelines/reference/hg38_F19K16_F24B22/BWA_index/hg38_F19K16_F24B22
+    bwa_index: /full/path/to/BWA_index/hg38_F19K16_F24B22
 
     # BSgenome: You may provide either package names or paths to BSgenome packages below.
     # If your data contains a mix of different organisms (e.g. arabidopsis), then you may
     # provide a different BSgenome for each organism.
+    # !! paths below need to be quoted
     bsgenome:
-      human: '/cluster/projects/pughlab/projects/cfMeDIP_compare_pipelines/reference/bsgenome/BSgenome.Hsapiens.UCSC.hg38'
-      arabidopsis: '/cluster/projects/pughlab/projects/cfMeDIP_compare_pipelines/reference/bsgenome/BSgenome.F19K16.F24B22'
+      human: '/full/path/to/bsgenome/BSgenome.Hsapiens.UCSC.hg38'
+      arabidopsis: '/full/path/to/bsgenome/BSgenome.F19K16.F24B22'
 
     # Chromosomes: List the chromosomes below for each organism used.
     chromosomes:
@@ -74,7 +73,7 @@ data:
 
     # ConsensusCruncher barcode setting: Use either
     # --blist BARCODELIST or --bpattern PATTERN below.
-    barcodes: '--blist /cluster/projects/pughlab/projects/cfMeDIP_compare_pipelines/reference/barcodes/barcode_idt.txt'
+    barcodes: '--blist /full/path/to/barcode_idt.txt'
 
     # Trim Galore! settings: You may modify the below settings as you
     # like, which will be provided as parameters to Trim Galore!
@@ -86,10 +85,10 @@ data:
   # cause it to be skipped by the Snakefile.
 
   cohorts:
-    some_cohort_ftype_fastq:
-      samplesheet: /cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/example_samplesheets/samplesheet_cfmedip_2toys_fastq.csv
-      #samplesheet: /cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/example_samplesheets/samplesheet_cfmedip_2toys_bam.csv
-      #samplesheet: /cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/example_samplesheets/samplesheet_cfmedip_2toys_bedpe.csv
+    some_proj_name:
+      samplesheet: /full/path/to/PLBR_MedRemixBEDPE/example_samplesheets/samplesheet_cfmedip_2toys_fastq.csv
+      #samplesheet: /full/path/to/PLBR_MedRemixBEDPE/example_samplesheets/samplesheet_cfmedip_2toys_bam.csv
+      #samplesheet: /full/path/to/PLBR_MedRemixBEDPE/example_samplesheets/samplesheet_cfmedip_2toys_bedpe.csv
       active: True
       settings:
         chromosomes:

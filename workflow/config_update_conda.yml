@@ -51,9 +51,6 @@ data:
   # that will override default settings. 
   defaults:
 
-    # Genome: path to default genome .fa file.
-    genome: /full/path/to/reference/genomes/hg38_F19K16_F24B22/hg38_F19K16_F24B22.fa
-
     # BWA Index: this is the prefix for BWA Index. By adding the file extensions,
     # you can locate the files. For example,
     # bwa_index: /path/to/bwa/index implies that the following files exist:
@@ -87,7 +84,7 @@ data:
 
   cohorts:
     update_conda:
-      samplesheet: /cluster/home/t110409uhn/git/cfmedip_medremix_bedpe_git/workflow/samplesheet_example.csv
+      samplesheet: ./samplesheet_example.csv
       active: True
       settings:
         chromosomes:

@@ -1,3 +1,4 @@
 **/workflow/.snakemake/
 **/workflow/logs_slurm/
 **/workflow/slurm*
+**/workflow/test*

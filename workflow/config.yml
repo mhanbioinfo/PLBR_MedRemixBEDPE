@@ -52,6 +52,12 @@ data:
   # that will override default settings. 
   defaults:
 
+    # Genome: path to default genome .fa file.
+    genome: /cluster/projects/pughlab/projects/cfMeDIP_compare_pipelines/reference/hg38_F19K16_F24B22/hg38_F19K16_F24B22.fa
+
+    # hg38 only genome (no F19K16 and F24B22 - for QC purposes)
+    hg38only_genome: /cluster/tools/data/genomes/human/hg38/iGenomes/Sequence/WholeGenomeFasta/genome.fa
+
     # BWA Index: this is the prefix for BWA Index. By adding the file extensions,
     # you can locate the files. For example,
     # bwa_index: /path/to/bwa/index implies that the following files exist:

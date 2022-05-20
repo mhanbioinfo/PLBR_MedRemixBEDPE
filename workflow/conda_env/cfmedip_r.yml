@@ -14,3 +14,4 @@ dependencies:
   - bioconductor-bsgenome=1.58.0
   - bioconductor-genomicranges=1.42.0
   - bioconductor-medips=1.42.0
+  - bioconductor-bsgenome.hsapiens.ucsc.hg38=1.4.3

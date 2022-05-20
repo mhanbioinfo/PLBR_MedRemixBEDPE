@@ -3,3 +3,10 @@
 **/workflow/slurm*
 **/workflow/test*
 **/example_samplesheets/test*
+.DS_Store
+._.DS_Store
+**/workflow/.DS_Store
+**/workflow/._.DS_Store
+**/workflow/src/.DS_Store
+**/workflow/src/._.DS_Store
+

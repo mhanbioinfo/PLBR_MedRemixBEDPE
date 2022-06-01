@@ -11,14 +11,12 @@ rule bam2bedpe:
         slurm_local = config['pipeline_params']['slurm_local'],
         chunks = config['pipeline_params']['chunks'],
         out_dir = path_to_data + '/{cohort}/results/bedpe_out',
-        src_dir = config['pipeline_params']['src_dir'],
-        picard_dir = config['pipeline_params']['picard_dir'],
         conda_activate = config['pipeline_params']['conda_activate'],
         conda_env = config['pipeline_params']['conda_env'],
     resources: cpus=1, mem_mb=60000, time_min='3-00:00:00'
     conda: '../conda_env/samtools.yml'
     shell:
-        'bash src/bam2bedpe_scripts/bam2bedpe.sh -s {params.slurm_local} -c {params.chunks} -b {input} -o {params.out_dir} -x {params.src_dir} -p {params.picard_dir} -a {params.conda_activate} -e {params.conda_env}'
+        'bash src/bam2bedpe_scripts/bam2bedpe.sh -s {params.slurm_local} -c {params.chunks} -b {input} -o {params.out_dir} -a {params.conda_activate} -e {params.conda_env}'
 
 rule get_clean_bedpe4medremix:
     input:

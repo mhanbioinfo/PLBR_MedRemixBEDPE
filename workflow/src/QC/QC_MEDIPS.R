@@ -100,10 +100,27 @@ cr =
                      shift = shift,
                      paired = paired,
                      chr.select = chr.select)
-print(paste0("Number of CpGs in reference: ", length(cr$cov.res)))
-print(paste0("Number of CpG covered with >= 1 read: ", length(cr$cov.res[cr$cov.res > 0])))
-print(paste0("Number of reads covering a CpG: ", cr$numberReads))
+print(paste0("Total number of reads: ", cr$numberReads))
 print(paste0("Number of reads NOT covering a CpG: ", cr$numberReadsWO))
+print(paste0("Fraction of reads NOT covering a CpG: ", round(cr$numberReadsWO / cr$numberReads, 5)))
+
+print(paste0("Number of CpGs in reference: ", length(cr$cov.res)))
+print(paste0("Number of CpG not covered by a read: ", length(cr$cov.res[cr$cov.res < 1])))
+print(paste0("Number of CpG covered by 1 read: ", length(cr$cov.res[cr$cov.res == 1])))
+print(paste0("Number of CpG covered by 2 reads: ", length(cr$cov.res[cr$cov.res == 2])))
+print(paste0("Number of CpG covered by 3 reads: ", length(cr$cov.res[cr$cov.res == 3])))
+print(paste0("Number of CpG covered by 4 reads: ", length(cr$cov.res[cr$cov.res == 4])))
+print(paste0("Number of CpG covered by 5 reads: ", length(cr$cov.res[cr$cov.res == 5])))
+print(paste0("Number of CpG covered by >5 reads: ", length(cr$cov.res[cr$cov.res > 5])))
+
+print(paste0("Fraction of CpG not covered by a read: ", round(length(cr$cov.res[cr$cov.res < 1]) / length(cr$cov.res),5)))
+print(paste0("Fraction of CpG covered by 1 read: ", round(length(cr$cov.res[cr$cov.res == 1]) / length(cr$cov.res),5)))
+print(paste0("Fraction of CpG covered by 2 reads: ", round(length(cr$cov.res[cr$cov.res == 2]) / length(cr$cov.res),5)))
+print(paste0("Fraction of CpG covered by 3 reads: ", round(length(cr$cov.res[cr$cov.res == 3]) / length(cr$cov.res),5)))
+print(paste0("Fraction of CpG covered by 4 reads: ", round(length(cr$cov.res[cr$cov.res == 4]) / length(cr$cov.res),5)))
+print(paste0("Fraction of CpG covered by 5 reads: ", round(length(cr$cov.res[cr$cov.res == 5]) / length(cr$cov.res),5)))
+print(paste0("Fraction of CpG covered by >5 reads: ", round(length(cr$cov.res[cr$cov.res > 5]) / length(cr$cov.res),5)))
+
 
 pdf(paste0(out_dir, fname, ".MEDIPS.seqCovPie.pdf"), width = 5, height = 4)
 MEDIPS.plotSeqCoverage(seqCoverageObj=cr,
@@ -228,14 +245,28 @@ er =
 
 message("Writing out MEDIPS QC metrics: saturation, CpG coverage and CpG enrichment.")
 QC_MEDIPS.df =
-  data.frame(QC_type = rep("medips_QC", 19),
+  data.frame(QC_type = rep("medips_QC", 33),
              metrics = c("ref_genome",
                          "satr.est_cor",
                          "satr.tru_cor",
-                         "CpG_cov.CpG_in_ref",
-                         "CpG_cov.CpG_gt1_read",
-                         "CpG_cov.reads_w_CpG",
-                         "CpG_cov.reads_wo_CpG",
+                         "CpG_cov.totalNumReads",
+                         "CpG_cov.numReadsWoCpG",
+                         "CpG_cov.fracReadsWoCpG",
+                         "CpG_cov.numCpGinRef",
+                         "CpG_cov.numCpGwoReads",
+                         "CpG_cov.numCpGw1read",
+                         "CpG_cov.numCpGw2Reads",
+                         "CpG_cov.numCpGw3Reads",
+                         "CpG_cov.numCpGw4Reads",
+                         "CpG_cov.numCpGw5Reads",
+                         "CpG_cov.numCpGgt5Reads",
+                         "CpG_cov.fracCpGwoReads",
+                         "CpG_cov.fracCpGw1read",
+                         "CpG_cov.fracCpGw2Reads",
+                         "CpG_cov.fracCpGw3Reads",
+                         "CpG_cov.fracCpGw4Reads",
+                         "CpG_cov.fracCpGw5Reads",
+                         "CpG_cov.fracCpGgt5Reads",
                          "enrich.regions.C",
                          "enrich.regions.G",
                          "enrich.regions.CG",
@@ -251,10 +282,24 @@ QC_MEDIPS.df =
              values = c(er$genome,
                         round(sr$maxEstCor[2], 5),
                         round(sr$maxTruCor[2], 5),
-                        length(cr$cov.res),
-                        length(cr$cov.res[cr$cov.res > 0]),
                         cr$numberReads,
                         cr$numberReadsWO,
+                        round(cr$numberReadsWO / cr$numberReads, 5),
+                        length(cr$cov.res),
+                        length(cr$cov.res[cr$cov.res < 1]),
+                        length(cr$cov.res[cr$cov.res == 1]),
+                        length(cr$cov.res[cr$cov.res == 2]),
+                        length(cr$cov.res[cr$cov.res == 3]),
+                        length(cr$cov.res[cr$cov.res == 4]),
+                        length(cr$cov.res[cr$cov.res == 5]),
+                        length(cr$cov.res[cr$cov.res > 5]),
+                        round(length(cr$cov.res[cr$cov.res < 1]) / length(cr$cov.res), 5),
+                        round(length(cr$cov.res[cr$cov.res == 1]) / length(cr$cov.res), 5),
+                        round(length(cr$cov.res[cr$cov.res == 2]) / length(cr$cov.res), 5),
+                        round(length(cr$cov.res[cr$cov.res == 3]) / length(cr$cov.res), 5),
+                        round(length(cr$cov.res[cr$cov.res == 4]) / length(cr$cov.res), 5),
+                        round(length(cr$cov.res[cr$cov.res == 5]) / length(cr$cov.res), 5),
+                        round(length(cr$cov.res[cr$cov.res > 5]) / length(cr$cov.res), 5),
                         er$regions.C,
                         er$regions.G,
                         er$regions.CG,

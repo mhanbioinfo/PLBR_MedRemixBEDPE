@@ -1,11 +1,25 @@
 QC_type	metrics	toy01
 medips_QC	ref_genome	BSgenome.Hsapiens.UCSC.hg38
-medips_QC	satr.est_cor	0.49966
-medips_QC	satr.tru_cor	0.1998
-medips_QC	CpG_cov.CpG_in_ref	29401360
-medips_QC	CpG_cov.CpG_gt1_read	82615
-medips_QC	CpG_cov.reads_w_CpG	19252
-medips_QC	CpG_cov.reads_wo_CpG	272
+medips_QC	satr.est_cor	0.5013
+medips_QC	satr.tru_cor	0.19849
+medips_QC	CpG_cov.totalNumReads	19252
+medips_QC	CpG_cov.numReadsWoCpG	272
+medips_QC	CpG_cov.fracReadsWoCpG	0.01413
+medips_QC	CpG_cov.numCpGinRef	29401360
+medips_QC	CpG_cov.numCpGwoReads	29318745
+medips_QC	CpG_cov.numCpGw1read	80527
+medips_QC	CpG_cov.numCpGw2Reads	1157
+medips_QC	CpG_cov.numCpGw3Reads	336
+medips_QC	CpG_cov.numCpGw4Reads	185
+medips_QC	CpG_cov.numCpGw5Reads	136
+medips_QC	CpG_cov.numCpGgt5Reads	274
+medips_QC	CpG_cov.fracCpGwoReads	0.99719
+medips_QC	CpG_cov.fracCpGw1read	0.00274
+medips_QC	CpG_cov.fracCpGw2Reads	0.00004
+medips_QC	CpG_cov.fracCpGw3Reads	0.00001
+medips_QC	CpG_cov.fracCpGw4Reads	0.00001
+medips_QC	CpG_cov.fracCpGw5Reads	0
+medips_QC	CpG_cov.fracCpGgt5Reads	0.00001
 medips_QC	enrich.regions.C	701237
 medips_QC	enrich.regions.G	713651
 medips_QC	enrich.regions.CG	87168
@@ -63,6 +77,11 @@ picard.CollectAlignmentSummaryMetrics	PF_MISMATCH_RATE	0.003931	0.004572	0.00425
 picard.CollectAlignmentSummaryMetrics	PF_HQ_ERROR_RATE	0.002842	0.003476	0.003159
 picard.CollectAlignmentSummaryMetrics	PF_INDEL_RATE	0.000192	0.000163	0.000178
 picard.CollectAlignmentSummaryMetrics	MEAN_READ_LENGTH	59.854253	59.809785	59.832019
+picard.CollectAlignmentSummaryMetrics	SD_READ_LENGTH	1.985503	1.644726	1.823207
+picard.CollectAlignmentSummaryMetrics	MEDIAN_READ_LENGTH	60	60	60
+picard.CollectAlignmentSummaryMetrics	MAD_READ_LENGTH	1	1	1
+picard.CollectAlignmentSummaryMetrics	MIN_READ_LENGTH	20	21	20
+picard.CollectAlignmentSummaryMetrics	MAX_READ_LENGTH	61	61	61
 picard.CollectAlignmentSummaryMetrics	READS_ALIGNED_IN_PAIRS	20419	20419	40838
 picard.CollectAlignmentSummaryMetrics	PCT_READS_ALIGNED_IN_PAIRS	1	1	1
 picard.CollectAlignmentSummaryMetrics	PF_READS_IMPROPER_PAIRS	0	0	0
@@ -71,6 +90,9 @@ picard.CollectAlignmentSummaryMetrics	BAD_CYCLES	0	0	0
 picard.CollectAlignmentSummaryMetrics	STRAND_BALANCE	0.502179	0.497821	0.5
 picard.CollectAlignmentSummaryMetrics	PCT_CHIMERAS	0.000058	0.000058	0.000058
 picard.CollectAlignmentSummaryMetrics	PCT_ADAPTER	0	0	0
+picard.CollectAlignmentSummaryMetrics	PCT_SOFTCLIP	0.006727	0.006356	0.006542
+picard.CollectAlignmentSummaryMetrics	PCT_HARDCLIP	0	0	0
+picard.CollectAlignmentSummaryMetrics	AVG_POS_3PRIME_SOFTCLIP_LENGTH	12.760095	11.497436	12.152898
 picard.CollectQualityYieldMetrics	TOTAL_READS	40838
 picard.CollectQualityYieldMetrics	PF_READS	40838
 picard.CollectQualityYieldMetrics	READ_LENGTH	59

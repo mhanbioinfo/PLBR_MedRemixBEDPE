@@ -29,12 +29,6 @@ pipeline_params:
   ## number of chunks to proces in parallel
   chunks: 5
 
-  ## full path to bam2bedpe helper scripts
-  src_dir: /full/path/to/PLBR_MedRemixBEDPE/workflow/src/bam2bedpe_scripts/
-  
-  ## full path to directory with picard.jar
-  picard_dir: /full/path/to/picard/2.10.9
-
   ## path to conda activate
   conda_activate: /full/path/to/miniconda3/bin/activate
 

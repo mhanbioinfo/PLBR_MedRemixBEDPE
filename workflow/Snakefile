@@ -16,12 +16,13 @@ include: "rules/common.smk"                  ## self-defined functions
 if input_ftype == "fastq":
     include: "rules/process_fastq.smk"           ## consensusCruncher & trim-galore
     include: "rules/bwa_align_sort_merge.smk"    ## bwa align, samtools sort, merge
+    include: "rules/qc.smk"                      ## fastQC on fastq and bam
 elif input_ftype == "bam":
     include: "rules/process_bam.smk"             ## if input_ftype == bam, softlink bam to proper directory and index bam
+    include: "rules/qc.smk"                      ## fastQC on fastq and bam
 elif input_ftype == "bedpe":
     include: "rules/process_bedpe.smk"           ## if input_ftype == bedpe, softlink bedpe to proper directory
 
-include: "rules/qc.smk"               ## fastQC on fastq and bam
 include: "rules/bin_stat.smk"                ## tally methylation coverage per bin, bam or bedpe
 include: "rules/bam2bedpe4medremix.smk"      ## convert bam to bedpe and bedpe4medremix as input to MedRemixBEDPE
 include: "rules/cfmedip_nbglm.smk"           ## run MedRemixBEDPE nbglm methylation algorithm, bam or bedpe
@@ -49,16 +50,21 @@ elif bam_or_bedpe == 'bam':
                 sample=v[1]) for v in get_all_samples_with_cohorts()])
     )
 
-rule all:
-    input:
-        ## bam fastqc, bam flagstat
+output_qc_or_not = list()
+if input_ftype == 'fastq' or input_ftype == 'bam':
+    output_qc_or_not.append(
         expand(
             [path_to_data + '/{cohort}/qc/{sample}_qc_full.txt'.format(
                 cohort=v[0],
-                sample=v[1]) for v in get_all_samples_with_cohorts()]),
+                sample=v[1]) for v in get_all_samples_with_cohorts()])
+    )
 
+rule all:
+    input:
         ## get MedRemix nbglm output whether by .bam or via .bedpe 
-        use_bam_or_bedpe = use_bam_or_bedpe
+        use_bam_or_bedpe = use_bam_or_bedpe,
+        ## fastq fastqc, bam fastqc, bam flagstat, medips qc, methyl control qc
+        output_qc_or_not = output_qc_or_not
 
 
 ## EOF

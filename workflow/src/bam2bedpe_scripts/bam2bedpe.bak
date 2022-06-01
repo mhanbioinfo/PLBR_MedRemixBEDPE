@@ -14,7 +14,7 @@
 # getopts ###################################################
 usage(){
     echo 
-    echo "Usage: bash/sbatch bam2bedpe.sh -s [slurm|local] -c num_of_chunks -b bam_input_path -o output_dir -a CONDA -e ENV -t"
+    echo "Usage: bash/sbatch bam2bedpe.sh -s [slurm|local] -c num_of_chunks -b bam_input_path -o output_dir -x SRC_DIR -p PICARD_DIR -a CONDA -e ENV -t"
     echo 
 }
 no_args="true"
@@ -27,21 +27,23 @@ Help()
     echo 
     echo "Processes bam to bedpe in chunks, preserving FLAG, TLEN and CIGAR fields."
     echo
-    echo "Usage: bash/sbatch bam2bedpe.sh -s [slurm|local] -c num_of_chunks -b bam_input_path -o output_dir -a CONDA -e ENV -t"
+    echo "Usage: bash/sbatch bam2bedpe.sh -s [slurm|local] -c num_of_chunks -b bam_input_path -o output_dir -x SRC_DIR -p PICARD_DIR -a CONDA -e ENV -t"
     echo "options:"
     echo "-h   [HELP]      print help"
     echo "-s   [REQUIRED]  type either 'slurm' or 'local', local is with nohup"
     echo "-c   [REQUIRED]  number of chunks to process in parallel"
     echo "-b   [REQUIRED]  path to bam input (full path)"
     echo "-o   [REQUIRED]  output directory (full path)"
-    echo "-a   [REQUIRED]  full path to conda activate (e.g. /cluster/home/[username]/bin/miniconda3/bin/activate)"
+    echo "-x   [REQUIRED]  src directory with pipeline scripts (full path)"
+    echo "-p   [REQUIRED]  full path to directory containing picard.jar"
+    echo "-a   [REQUIRED]  full path to conda activate (e.g. /cluster/home/t110409uhn/bin/miniconda3/bin/activate)"
     echo "-e   [REQUIRED]  conda env with pysam (e.g. pipeline-medremixBEDPE)"
     echo "-t   [OPTIONAL]  keep tmp_dir"
     echo
 }
 
 ## Get the options
-while getopts ":hs:c:b:o:a:e:t" option; do
+while getopts ":hs:c:b:o:x:p:a:e:t" option; do
     case "${option}" in
         h) Help
            exit;;
@@ -49,6 +51,8 @@ while getopts ":hs:c:b:o:a:e:t" option; do
         c) NUM_OF_CHUNKS=${OPTARG};;
         b) INPUT_BAM_PATH=${OPTARG};;
         o) OUT_DIR=${OPTARG};;
+        x) SRC_DIR=${OPTARG};;
+        p) PICARD_DIR=${OPTARG};;
         a) CONDA_ACTIVATE=${OPTARG};;
         e) CONDA_ENV=${OPTARG};;
         t) KEEP_TMP=true;;
@@ -71,9 +75,12 @@ echo "processing on:    $SLURMLOCAL"
 echo "Job started at "$(date) 
 time1=$(date +%s)
 
-#PY_SCRIPT_DIR=${SRC_DIR}
-## pwd is workflow/ if using Snakemake
-PY_SCRIPT_PATH="$(pwd)/src/bam2bedpe_scripts/bam2bedpe_pysam_v5_wCIGAR.py"
+#NUM_OF_CORES=$( nproc )
+#echo "${NUM_OF_CORES} cores available, processing ${NUM_OF_CORES} chunks in parallel."
+#NUM_OF_CHUNKS=$NUM_OF_CORES
+
+PY_SCRIPT_DIR=${SRC_DIR}
+PY_SCRIPT_PATH="${PY_SCRIPT_DIR}/bam2bedpe_pysam_v5_wCIGAR.py"
 INPUT_DIR="${INPUT_BAM_PATH%/*}"
 INPUT_BAM="${INPUT_BAM_PATH##*/}"
 
@@ -140,19 +147,19 @@ for CHUNK in ${TMP_DIR}/${OUT_FRAG_NAMES}.CHUNK*; do
 	#SBATCH -e ./%j-%x.err
 	
 	source ${CONDA_ACTIVATE} ${CONDA_ENV}
-	#PICARD_DIR=${PICARD_DIR}
+	PICARD_DIR=${PICARD_DIR}
 	
 	echo "Job started at "\$(date) 
 	time1=\$(date +%s)
 	
-	picard FilterSamReads \
-	    -I ${INPUT_DIR}/${INPUT_BAM} \
-	    -O ${TMP_DIR}/"${INPUT_BAM%.*}_${CHUNK##*.}.bam" \
-	    -READ_LIST_FILE ${CHUNK} \
-	    -FILTER includeReadList \
-	    -WRITE_READS_FILES false \
-	    -USE_JDK_DEFLATER true \
-	    -USE_JDK_INFLATER true \
+	java -jar ${PICARD_DIR}/picard.jar FilterSamReads \
+	    I=${INPUT_DIR}/${INPUT_BAM} \
+	    O=${TMP_DIR}/"${INPUT_BAM%.*}_${CHUNK##*.}.bam" \
+	    READ_LIST_FILE=${CHUNK} \
+	    FILTER=includeReadList \
+	    WRITE_READS_FILES=false \
+	    USE_JDK_DEFLATER=true \
+	    USE_JDK_INFLATER=true \
 	
 	python ${PY_SCRIPT_PATH} \
 	    --sort_bam_by_qname \
@@ -179,10 +186,11 @@ while true; do
     if [ $(find ${TMP_DIR} -maxdepth 1 -mmin +3 -type f -regex ".*_CHUNK[1-9][0-9]*\.bedpe" | wc -l) -eq $NUM_OF_CHUNKS ] 
     then
         echo "All bedpe chunks have been written to, merging bedpe chunks..."
-        find ${TMP_DIR} -maxdepth 1 -mmin +3 -type f -regex ".*_CHUNK[1-9][0-9]*\.bedpe" -exec cat {} + \
-                | sort -k1,1V -k2,2n -k3,3n -k5,5n -k6,6n \
-                | gzip -c \
-                > ${OUT_DIR}/${OUT_MERGED_SORTD_BEDPE}.gz
+        BEDPE_CHUNKS=$(find ${TMP_DIR} -maxdepth 1 -mmin +3 -type f -regex ".*_CHUNK[1-9][0-9]*\.bedpe" | sort -V)
+        cat $BEDPE_CHUNKS \
+            | sort -k1,1V -k2,2n -k3,3n -k5,5n -k6,6n \
+            | gzip -c \
+            > ${OUT_DIR}/${OUT_MERGED_SORTD_BEDPE}.gz
         break
     else
         echo "Sleeping for 5 minutes, then recheck if bedpe chunks were written to completely."

@@ -1,3 +1,8 @@
+._*
+**/workflow/.*
+**/workflow/rules/.*
+**/workflow/src/.*
+**/workflow/src/bam2bedpe_scripts/.*
 **/workflow/.snakemake/
 **/workflow/logs_slurm/
 **/workflow/slurm*
@@ -5,8 +10,5 @@
 **/example_samplesheets/test*
 .DS_Store
 ._.DS_Store
-**/workflow/.DS_Store
-**/workflow/._.DS_Store
-**/workflow/src/.DS_Store
-**/workflow/src/._.DS_Store
-**/workflow/src/._*
+workflow/src/bam2bedpe_scripts/run_bam2bedpe.sh
+

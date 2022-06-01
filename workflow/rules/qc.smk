@@ -78,12 +78,11 @@ rule CollectGcBiasMetrics:
         chart = path_to_data + '/{cohort}/qc/picard_qc/{sample}.gc_bias_metrics.pdf',
         summary = temp(path_to_data + '/{cohort}/qc/picard_qc/{sample}.gc_bias_summary_metrics.txt'),
     params:
-        picard_dir = config['pipeline_params']['picard_dir'],
         fasta = config['data']['defaults']['hg38only_genome'],
     resources: cpus=1, mem_mb=32000, time_min='5:00:00'
     conda: '../conda_env/samtools.yml'
     shell:
-        'java -jar {params.picard_dir}/picard.jar CollectGcBiasMetrics I={input} O={output.metric} CHART={output.chart} S={output.summary} R={params.fasta} && bash src/QC/parse_picard_QC.sh picard.CollectGcBiasMetrics {output.summary} {output.summary}.parsed'
+        'picard CollectGcBiasMetrics -I {input} -O {output.metric} -CHART {output.chart} -S {output.summary} -R {params.fasta} && bash src/QC/parse_picard_QC.sh picard.CollectGcBiasMetrics {output.summary} {output.summary}.parsed'
 
 ## MarkDuplicates
 rule MarkDuplicates_QC:
@@ -92,12 +91,10 @@ rule MarkDuplicates_QC:
     output:
         markdup_bam = temp(path_to_data + '/{cohort}/qc/picard_qc/{sample}.picardMarkDup.bam'),
         metric = temp(path_to_data + '/{cohort}/qc/picard_qc/{sample}.marked_dup_metrics.txt'),
-    params:
-        picard_dir = config['pipeline_params']['picard_dir'],
     resources: cpus=1, mem_mb=32000, time_min='5:00:00'
     conda: '../conda_env/samtools.yml'
     shell:
-        'java -jar {params.picard_dir}/picard.jar MarkDuplicates I={input} O={output.markdup_bam} M={output.metric} && bash src/QC/parse_picard_QC.sh picard.MarkDuplicates {output.metric} {output.metric}.parsed'
+        'picard MarkDuplicates -I {input} -O {output.markdup_bam} -M {output.metric} && bash src/QC/parse_picard_QC.sh picard.MarkDuplicates {output.metric} {output.metric}.parsed'
 
 ## CollectAlignmentSummaryMetrics
 rule CollectAlignmentSummaryMetrics:
@@ -106,12 +103,11 @@ rule CollectAlignmentSummaryMetrics:
     output:
         metric = temp(path_to_data + '/{cohort}/qc/picard_qc/{sample}.alignmentMetrics.txt'),
     params:
-        picard_dir = config['pipeline_params']['picard_dir'],
         fasta = config['data']['defaults']['hg38only_genome'],
     resources: cpus=1, mem_mb=32000, time_min='5:00:00'
     conda: '../conda_env/samtools.yml'
     shell:
-        'java -jar {params.picard_dir}/picard.jar CollectAlignmentSummaryMetrics I={input} O={output.metric} R={params.fasta} && bash src/QC/parse_picard_QC.sh picard.CollectAlignmentSummaryMetrics {output.metric} {output.metric}.parsed'
+        'picard CollectAlignmentSummaryMetrics -I {input} -O {output.metric} -R {params.fasta} && bash src/QC/parse_picard_QC.sh picard.CollectAlignmentSummaryMetrics {output.metric} {output.metric}.parsed'
 
 ## CollectQualityYieldMetrics
 rule CollectQualityYieldMetrics:
@@ -119,12 +115,10 @@ rule CollectQualityYieldMetrics:
         path_to_data + '/{cohort}/results/bam_markdup/{sample}.aligned.sorted.markdup_hg38only.bam',
     output:
         metric = temp(path_to_data + '/{cohort}/qc/picard_qc/{sample}.quality_yield_metrics.txt'),
-    params:
-        picard_dir = config['pipeline_params']['picard_dir'],
     resources: cpus=1, mem_mb=32000, time_min='5:00:00'
     conda: '../conda_env/samtools.yml'
     shell:
-        'java -jar {params.picard_dir}/picard.jar CollectQualityYieldMetrics I={input} O={output.metric} && bash src/QC/parse_picard_QC.sh picard.CollectQualityYieldMetrics {output.metric} {output.metric}.parsed'
+        'picard CollectQualityYieldMetrics -I {input} -O {output.metric} && bash src/QC/parse_picard_QC.sh picard.CollectQualityYieldMetrics {output.metric} {output.metric}.parsed'
 
 ## { complains of missing files 'toy02.Rrbs completed successfully, but some output files are missing.' }
 ### CollectRrbsMetrics

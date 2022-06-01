@@ -5,6 +5,7 @@
 - Run MedRemix methylation profiler with bedpe input as part of PLBR database workflow.
 - Pipeline is an extension of the original MedRemix pipeline (https://github.com/pughlab/cfMeDIP-seq-analysis-pipeline)
 - Pipeline can take FASTQs, BAM or BEDPE as input.
+- For full specifications of BEDPE7+12 file format, please visit https://github.com/pughlab/bam2bedpe
 - Pipeline is written in Snakemake, designed to run on SLURM cluster, but can run locally as well.
 - Note: 
   - .bam filtering is slightly different from original MedRemix pipeline, therefore results will differ slightly

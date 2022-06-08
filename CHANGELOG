@@ -1,0 +1,7 @@
+2022-06-08 PLBR_MedRemixBEDPE (version 0.2.0)
+- FastQC, Picard QC, MEDIPS QC, methylation QC fully implemented
+- Cleaned up source code, rules files and config files
+
+2022-05-14 PLBR_MedRemixBEDPE (version 0.1.0)
+- Pipeline accepts fastq, bam and bedpe input
+- Conda env installation instructions written to wiki

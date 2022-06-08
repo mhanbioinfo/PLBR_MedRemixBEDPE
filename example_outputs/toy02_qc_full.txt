@@ -1,7 +1,7 @@
 QC_type	metrics	toy02
 medips_QC	ref_genome	BSgenome.Hsapiens.UCSC.hg38
-medips_QC	satr.est_cor	0.49096
-medips_QC	satr.tru_cor	0.18588
+medips_QC	satr.est_cor	0.48637
+medips_QC	satr.tru_cor	0.19458
 medips_QC	CpG_cov.totalNumReads	19051
 medips_QC	CpG_cov.numReadsWoCpG	277
 medips_QC	CpG_cov.fracReadsWoCpG	0.01454
@@ -52,6 +52,26 @@ picard.CollectGcBiasMetrics	GC_NC_20_39	0.323255
 picard.CollectGcBiasMetrics	GC_NC_40_59	1.365596
 picard.CollectGcBiasMetrics	GC_NC_60_79	4.520541
 picard.CollectGcBiasMetrics	GC_NC_80_100	0.237013
+picard.CollectInsertSizeMetrics	MEDIAN_INSERT_SIZE	146	0	0
+picard.CollectInsertSizeMetrics	MODE_INSERT_SIZE	145	0	0
+picard.CollectInsertSizeMetrics	MEDIAN_ABSOLUTE_DEVIATION	12	0	0
+picard.CollectInsertSizeMetrics	MIN_INSERT_SIZE	49	0	0
+picard.CollectInsertSizeMetrics	MAX_INSERT_SIZE	252	0	0
+picard.CollectInsertSizeMetrics	MEAN_INSERT_SIZE	144.412042	0	0
+picard.CollectInsertSizeMetrics	STANDARD_DEVIATION	23.88239	0	0
+picard.CollectInsertSizeMetrics	READ_PAIRS	20146	0	0
+picard.CollectInsertSizeMetrics	PAIR_ORIENTATION	FR	RF	TANDEM
+picard.CollectInsertSizeMetrics	WIDTH_OF_10_PERCENT	5	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_20_PERCENT	9	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_30_PERCENT	13	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_40_PERCENT	17	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_50_PERCENT	25	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_60_PERCENT	31	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_70_PERCENT	41	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_80_PERCENT	53	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_90_PERCENT	75	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_95_PERCENT	105	0	0
+picard.CollectInsertSizeMetrics	WIDTH_OF_99_PERCENT	169	0	0
 picard.MarkDuplicates	UNPAIRED_READS_EXAMINED	0
 picard.MarkDuplicates	READ_PAIRS_EXAMINED	20146
 picard.MarkDuplicates	SECONDARY_OR_SUPPLEMENTARY_RDS	3
